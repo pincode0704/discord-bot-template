@@ -1,44 +1,41 @@
-const { REST, Routes, Collection } = require('discord.js');
-const { Client, GatewayIntentBits } = require('discord.js');
-const fs = require('fs');
-const dotenv = require('dotenv')
-dotenv.config()
+const { REST, Routes, Collection } = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
+const fs = require("fs");
+const dotenv = require("dotenv");
+dotenv.config();
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds
-    ],
+    intents: [GatewayIntentBits.Guilds],
 });
 
-client.commands = new Collection()
+client.commands = new Collection();
 const commands = [];
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    client.commands.set(command.data.name, command)
+    client.commands.set(command.data.name, command);
     commands.push(command.data.toJSON());
 }
 
-const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 rest.put(Routes.applicationCommands(process.env.BOTID), { body: commands })
     .then((data) => console.log(`Successfully registered ${data.length} application commands.`))
     .catch(console.error);
 
-
-client.on('interactionCreate', async interaction => {
+client.on("interactionCreate", async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     const command = client.commands.get(interaction.commandName);
     if (!command) return;
 
     try {
-        command.execute(client, interaction)
+        command.execute(client, interaction);
     } catch (error) {
         console.error(error);
     }
-})
+});
 
-client.once('ready', () => {
-    console.log('Ready!');
+client.once("ready", () => {
+    console.log("Ready!");
 });
 client.login(process.env.TOKEN);
