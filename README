@@ -1,1 +1,8 @@
-
+1.需求：
+  node.js
+  discord.js
+  dotenv
+  openai
+2.安裝
+  Node.js v16以上
+  npm i discord.js@14.7.3 dotenv openai 
