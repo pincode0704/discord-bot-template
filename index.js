@@ -1,4 +1,5 @@
 const { Client, GatewayIntentBits } = require("discord.js");
+const observe = require("./dashboard/observe");
 
 require("dotenv").config();
 
@@ -25,3 +26,7 @@ client.once("ready", async (client) => {
 });
 
 client.login(process.env.TOKEN);
+
+observe(client)
+    .start()
+    .then((url) => console.log(`你可以在 ${url} 觀察 Bot 的狀態`));
