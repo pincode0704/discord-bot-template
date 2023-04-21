@@ -13,9 +13,9 @@
 ├── index.js
 ├── commands
 │   └── ping.js
-└── package.json
+├── package.json
 ├── package-lock.json
-├── node_modules
+└── node_modules
 ```
 
 - `README.md`：包含專案說明和使用指南的文件，就是你現在看到的這個文件。
